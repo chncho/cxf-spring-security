@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Main Page</title>
+<script src="/cxf-spring-security/static/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+    <p>Welcome</p>
+    <p>
+        <input id="openBtn" type="button" value="Open" />
+    </p>
+    <p id="openPlaceholder"></p>
+    <p>
+        <input id="securedBtn" type="button" value="Secured" />
+    </p>
+    <p id="securedPlaceholder"></p>
+    <script type="text/javascript">
+        $('#openBtn').click(function(){
+        	$.ajax({
+                url:'/cxf-spring-security/api/open',
+                success:function(result, status, xhr){
+                    $('#openPlaceholder').append(result.value);
+                },
+                error:function(xhr, status, msg) {
+                	$('#openPlaceholder').append("Error: " + xhr.status + "; " + msg);
+                }
+            });    
+    	});
+        $('#securedBtn').click(function(){
+            $.ajax({
+                url:'/cxf-spring-security/api/secured',
+                success:function(result, status, xhr){
+                    $('#securedPlaceholder').append(result.value);
+                },
+                error:function(xhr, status, msg) {
+                    if (xhr.status == 401) {
+                    	document.location.href = "/cxf-spring-security/login.html";
+                    } else {
+                        $('#securedPlaceholder').append("Error: " + xhr.status + "; " + msg);
+                    }
+                }
+            });    
+        });         
+    </script>
+</body>
+</html>
